@@ -21,7 +21,7 @@ export const initLoginForm = {
 };
 
 export default function LoginFormView() {
-  const {login, error} = useAuthStore();
+  const {login, error, loading} = useAuthStore();
 
   const methods = useForm<LoginForm>({
     mode: 'onBlur',
@@ -35,7 +35,7 @@ export default function LoginFormView() {
   } = methods;
 
   const onSubmit = async (data: LoginForm) => {
-    login(data);
+    await login(data);
   };
 
   return (
@@ -59,7 +59,7 @@ export default function LoginFormView() {
 
       <View />
       <Button
-        disabled={isSubmitting}
+        disabled={isSubmitting || loading}
         onPress={handleSubmit(onSubmit)}
         title="Login"
         color={Colors.PRIMARY}

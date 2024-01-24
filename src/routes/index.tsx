@@ -10,12 +10,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Routes() {
   const {Navigator, Screen} = Stack;
-  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const {accessToken, loading} = useAuthStore();
+
+  if (loading === undefined) {
+    return;
+  }
 
   return (
     <NavigationContainer>
       <Navigator screenOptions={{headerShown: false}}>
-        {isAuthenticated ? (
+        {accessToken ? (
           <Screen name={RoutesName.HOME} component={HomeScreen} />
         ) : (
           <Screen name={RoutesName.LOGIN} component={LoginScreen} />
