@@ -1,9 +1,10 @@
 import React from 'react';
-import {Image, SafeAreaView, StatusBar, Text, View} from 'react-native';
+import {Image, SafeAreaView, StatusBar, View} from 'react-native';
 import {Logo} from '../../assets/images';
 import style from './style';
 import Colors from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
+import LoginForm from '../../components/features/LoginForm';
 
 export default function LoginScreen() {
   return (
@@ -11,9 +12,8 @@ export default function LoginScreen() {
       <StatusBar backgroundColor={Colors.DARK} />
       <View style={style.containerForm}>
         <Image source={Logo} />
-        <View style={[globalStyles.gapDefault, globalStyles.mt20]}>
-          <Text>Login Screen</Text>
-          <Text>Login Screen</Text>
+        <View style={[globalStyles.gapDefault, globalStyles.mt30]}>
+          <LoginForm />
         </View>
       </View>
     </SafeAreaView>
