@@ -4,7 +4,7 @@ import {Logo} from '../../assets/images';
 import style from './style';
 import Colors from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
-import LoginForm from '../../components/features/LoginForm';
+import LoginFormView from '../../components/features/LoginForm';
 
 export default function LoginScreen() {
   return (
@@ -13,7 +13,7 @@ export default function LoginScreen() {
       <View style={style.containerForm}>
         <Image source={Logo} />
         <View style={[globalStyles.gapDefault, globalStyles.mt30]}>
-          <LoginForm />
+          <LoginFormView />
         </View>
       </View>
     </SafeAreaView>

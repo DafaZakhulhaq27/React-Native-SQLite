@@ -5,6 +5,8 @@ import Colors from '../../styles/colors';
 import {FormProvider, useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import useAuthStore from '../../stores/auth';
+import ErrorView from '../ErrorView';
 
 export const loginForm = z.object({
   email: z.string().email().min(1, 'Email cannot empty'),
@@ -18,7 +20,9 @@ export const initLoginForm = {
   password: '',
 };
 
-export default function LoginForm() {
+export default function LoginFormView() {
+  const {login, error} = useAuthStore();
+
   const methods = useForm<LoginForm>({
     mode: 'onBlur',
     resolver: zodResolver(loginForm),
@@ -31,11 +35,12 @@ export default function LoginForm() {
   } = methods;
 
   const onSubmit = async (data: LoginForm) => {
-    console.log(data, 'data');
+    login(data);
   };
 
   return (
     <>
+      <ErrorView error={error} />
       <FormProvider {...methods}>
         <TextField
           label="Email"
@@ -46,7 +51,7 @@ export default function LoginForm() {
         <TextField
           label="Password"
           name="password"
-          placeholder="Enter Username..."
+          placeholder="Enter Password..."
           theme="dark"
           type="password"
         />
