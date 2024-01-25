@@ -3,6 +3,7 @@ import {Pressable, Text, TextInput, TextInputProps, View} from 'react-native';
 import style from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Controller, useFormContext} from 'react-hook-form';
+import Colors from '../../../styles/colors';
 
 type Props = {
   theme?: 'light' | 'dark';
@@ -57,7 +58,7 @@ export default function TextField({
             <Icon
               name={isSecureText ? 'eye' : 'eye-slash'}
               size={30}
-              color="black"
+              color={Colors.DARK}
             />
           </Pressable>
         )}
