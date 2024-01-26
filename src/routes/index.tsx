@@ -7,6 +7,8 @@ import useAuthStore from '../stores/auth';
 import HomeDrawer from './homeDrawer';
 import ProductDetailScreen from '../screens/productDetail';
 import Colors from '../styles/colors';
+import CartButton from '../components/CartButton';
+import CartScreen from '../screens/cart';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,9 +34,23 @@ export default function Routes() {
                 },
                 headerTintColor: 'white',
                 headerTitle: 'Bababos',
+                // eslint-disable-next-line react/no-unstable-nested-components
+                headerRight: () => <CartButton />,
               }}
               name={RoutesName.PRODUCT_DETAIL}
               component={ProductDetailScreen}
+            />
+            <Screen
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: Colors.DARK,
+                },
+                headerTintColor: 'white',
+                headerTitle: 'Bababos',
+              }}
+              name={RoutesName.CART}
+              component={CartScreen}
             />
           </>
         ) : (

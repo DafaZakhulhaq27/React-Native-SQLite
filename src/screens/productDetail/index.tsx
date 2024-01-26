@@ -6,6 +6,7 @@ import {RootStackParamList, RoutesName} from '../../routes/type';
 import style from './style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../styles/colors';
+import useCartStore from '../../stores/cart';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -16,6 +17,7 @@ export default function ProductDetailScreen({route}: Props) {
   const {
     params: {product},
   } = route;
+  const addCart = useCartStore(state => state.addCart);
 
   const {
     container,
@@ -66,7 +68,11 @@ export default function ProductDetailScreen({route}: Props) {
           <Text style={[textBlack]}>{product.description}</Text>
         </View>
       </ScrollView>
-      <Button title="Add to Cart" color={Colors.PRIMARY} />
+      <Button
+        onPress={() => addCart(product, 1)}
+        title="Add to Cart"
+        color={Colors.PRIMARY}
+      />
     </View>
   );
 }

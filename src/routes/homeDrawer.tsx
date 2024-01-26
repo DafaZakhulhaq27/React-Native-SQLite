@@ -7,25 +7,14 @@ import {
 } from '@react-navigation/drawer';
 import ProfileScreen from '../screens/profile';
 import ProductScreen from '../screens/products';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import Colors from '../styles/colors';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import globalStyles from '../styles/globalStyles';
 import useAuthStore from '../stores/auth';
 import {HomeDrawerStackParamList, RoutesName} from './type';
+import CartButton from '../components/CartButton';
 
 const Drawer = createDrawerNavigator<HomeDrawerStackParamList>();
-
-const CartButton = () => {
-  return (
-    <View style={[globalStyles.mr20, globalStyles.mt5]}>
-      <Icon name={'shopping-cart'} size={20} color="white" />
-      <View style={style.badgeCart}>
-        <Text style={globalStyles.fs12}>1</Text>
-      </View>
-    </View>
-  );
-};
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const {navigation, state} = props;
@@ -68,6 +57,7 @@ export default function HomeDrawer() {
     <>
       <StatusBar backgroundColor={Colors.DARK} />
       <Navigator
+        // eslint-disable-next-line react/no-unstable-nested-components
         drawerContent={props => <CustomDrawerContent {...props} />}
         screenOptions={{
           title: 'Bababos',
@@ -81,6 +71,7 @@ export default function HomeDrawer() {
           drawerStyle: {
             backgroundColor: Colors.DARK,
           },
+          // eslint-disable-next-line react/no-unstable-nested-components
           headerRight: () => <CartButton />,
         }}>
         <Screen name={RoutesName.PROFILE} component={ProfileScreen} />
@@ -89,16 +80,3 @@ export default function HomeDrawer() {
     </>
   );
 }
-
-const style = StyleSheet.create({
-  badgeCart: {
-    backgroundColor: 'red',
-    position: 'absolute',
-    bottom: -10,
-    width: 15,
-    height: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-});
