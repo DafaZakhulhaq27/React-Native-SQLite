@@ -1,10 +1,47 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
+import globalStyles from '../../styles/globalStyles';
+import {useGetProducts} from '../../api/products';
+import ProductCards from '../../components/features/Products/ProductCards';
+import style from './style';
+import {
+  HomeDrawerStackParamList,
+  RootStackParamList,
+  RoutesName,
+} from '../../routes/type';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-export default function ProductScreen() {
+type Props = NativeStackScreenProps<
+  HomeDrawerStackParamList & RootStackParamList,
+  RoutesName.PRODUCT
+>;
+
+export default function ProductScreen({navigation}: Props) {
+  const {pDefault} = globalStyles;
+  const {data, isLoading} = useGetProducts();
+
+  if (isLoading) {
+    return (
+      <View style={[pDefault]}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Product Screen</Text>
-    </View>
+    <FlatList
+      numColumns={2}
+      columnWrapperStyle={style.columnWrapperList}
+      data={data}
+      keyExtractor={product => product?.id.toString()}
+      renderItem={({item: product}) => (
+        <ProductCards
+          product={product}
+          onPress={() =>
+            navigation.navigate(RoutesName.PRODUCT_DETAIL, {product})
+          }
+        />
+      )}
+    />
   );
 }

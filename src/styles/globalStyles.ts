@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import Colors from './colors';
 
 const globalStyles = StyleSheet.create({
   container: {
@@ -10,6 +11,9 @@ const globalStyles = StyleSheet.create({
   },
   gapDefault: {
     gap: 10,
+  },
+  gap3: {
+    gap: 3,
   },
   alignCenter: {
     alignItems: 'center',
@@ -547,6 +551,9 @@ const globalStyles = StyleSheet.create({
   },
   textUnderline: {textDecorationLine: 'underline'},
   textItalic: {fontStyle: 'italic'},
+  textPrimary: {
+    color: Colors.PRIMARY,
+  },
   textRed: {
     color: '#ff0000',
   },
