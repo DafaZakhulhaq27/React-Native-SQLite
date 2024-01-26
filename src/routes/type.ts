@@ -7,6 +7,7 @@ export enum RoutesName {
   PRODUCT = 'Product',
   PRODUCT_DETAIL = 'Product Detail',
   CART = 'Cart',
+  THANKYOU = 'Thank You',
 }
 
 export type RootStackParamList = {
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   [RoutesName.HOME]: undefined;
   [RoutesName.PRODUCT_DETAIL]: {product: Product};
   [RoutesName.CART]: undefined;
+  [RoutesName.THANKYOU]: undefined;
 };
 
 // Home Drawer

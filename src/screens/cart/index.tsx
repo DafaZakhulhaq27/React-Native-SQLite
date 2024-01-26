@@ -4,8 +4,12 @@ import globalStyles from '../../styles/globalStyles';
 import useCartStore from '../../stores/cart';
 import CartCard from '../../components/features/Carts/CartCard';
 import Colors from '../../styles/colors';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList, RoutesName} from '../../routes/type';
 
-export default function CartScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, RoutesName.CART>;
+
+export default function CartScreen({navigation}: Props) {
   const {
     container,
     pDefault,
@@ -17,7 +21,7 @@ export default function CartScreen() {
     fdRow,
     jcSb,
   } = globalStyles;
-  const {cart, getTotalCart} = useCartStore();
+  const {cart, getTotalCart, clearCart} = useCartStore();
 
   return (
     <View style={[container, pDefault, gapDefault]}>
@@ -34,7 +38,14 @@ export default function CartScreen() {
             <Text style={[fw900, fs24]}>${getTotalCart()}</Text>
           </View>
           <View>
-            <Button title="Checkout" color={Colors.PRIMARY} />
+            <Button
+              onPress={() => {
+                clearCart();
+                navigation.replace(RoutesName.THANKYOU);
+              }}
+              title="Checkout"
+              color={Colors.PRIMARY}
+            />
           </View>
         </View>
       )}

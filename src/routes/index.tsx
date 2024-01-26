@@ -9,6 +9,7 @@ import ProductDetailScreen from '../screens/productDetail';
 import Colors from '../styles/colors';
 import CartButton from '../components/CartButton';
 import CartScreen from '../screens/cart';
+import ThankYouScreen from '../screens/thankYou';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -51,6 +52,18 @@ export default function Routes() {
               }}
               name={RoutesName.CART}
               component={CartScreen}
+            />
+            <Screen
+              options={{
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: Colors.DARK,
+                },
+                headerTintColor: 'white',
+                headerTitle: 'Bababos',
+              }}
+              name={RoutesName.THANKYOU}
+              component={ThankYouScreen}
             />
           </>
         ) : (
