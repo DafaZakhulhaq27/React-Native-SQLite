@@ -10,14 +10,16 @@ import Colors from '../styles/colors';
 import CartButton from '../components/CartButton';
 import CartScreen from '../screens/cart';
 import ThankYouScreen from '../screens/thankYou';
+import {useInitDB} from '../database/utils';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Routes() {
   const {Navigator, Screen} = Stack;
   const {accessToken, loading} = useAuthStore();
+  const {isLoading} = useInitDB();
 
-  if (loading === undefined) {
+  if (loading === undefined || isLoading) {
     return;
   }
 

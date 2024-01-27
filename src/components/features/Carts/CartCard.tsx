@@ -39,21 +39,21 @@ export default function CartCard({index, ...data}: Props) {
         </View>
         <View style={[fdRow, gapDefault, alignCenter]}>
           <Pressable
-            onPress={() => editQuantityCart(index, 'plus')}
-            style={style.buttonQuantity}>
-            <Text style={textWhite}>+</Text>
-          </Pressable>
-          <Text>{data.quantity}</Text>
-          <Pressable
             onPress={() => {
               if (data.quantity === 1) {
-                removeCart(index);
+                removeCart(data, index);
               } else {
-                editQuantityCart(index, 'min');
+                editQuantityCart(data, index, 'min');
               }
             }}
             style={style.buttonQuantity}>
             <Text style={textWhite}>-</Text>
+          </Pressable>
+          <Text>{data.quantity}</Text>
+          <Pressable
+            onPress={() => editQuantityCart(data, index, 'plus')}
+            style={style.buttonQuantity}>
+            <Text style={textWhite}>+</Text>
           </Pressable>
         </View>
       </View>

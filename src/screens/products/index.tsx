@@ -1,7 +1,6 @@
 import React from 'react';
 import {ActivityIndicator, FlatList, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
-import {useGetProducts} from '../../api/products';
 import ProductCards from '../../components/features/Products/ProductCards';
 import style from './style';
 import {
@@ -10,6 +9,7 @@ import {
   RoutesName,
 } from '../../routes/type';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useGetProducts} from '../../database/product';
 
 type Props = NativeStackScreenProps<
   HomeDrawerStackParamList & RootStackParamList,
@@ -32,7 +32,7 @@ export default function ProductScreen({navigation}: Props) {
     <FlatList
       numColumns={2}
       columnWrapperStyle={style.columnWrapperList}
-      data={data}
+      data={data?.products}
       keyExtractor={product => product?.id.toString()}
       renderItem={({item: product}) => (
         <ProductCards

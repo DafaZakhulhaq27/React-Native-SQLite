@@ -1,59 +1,84 @@
 import {create} from 'zustand';
 import {Cart} from '../models/cart';
 import {Product} from '../models/product';
+import {
+  addCart,
+  deleteCart,
+  deleteUserCart,
+  getUserCart,
+  updateCart,
+} from '../database/cart';
+import useAuthStore from './auth';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 type Props = {
   cart: Cart[];
   loading?: boolean;
   error?: string;
-  addCart: (product: Product, quantity: number) => void;
-  removeCart: (index: number) => void;
-  editQuantityCart: (index: number, type: 'min' | 'plus') => void;
+  addCart: (product: Product, quantity: number) => Promise<void>;
+  removeCart: (product: Product, index: number) => void;
+  editQuantityCart: (
+    product: Product,
+    index: number,
+    type: 'min' | 'plus',
+  ) => void;
   clearCart: () => void;
   getTotalCart: () => number;
+  getCartDb: () => void;
 };
 
 const useCartStore = create<Props>((set, get) => {
   return {
     cart: [],
-    addCart: (product, quantity) => {
-      set(state => {
-        const cart: Cart[] = [...state.cart];
-        const isCartExist = state.cart.findIndex(_ => _.id === product.id);
+    addCart: async (product, quantity) => {
+      const cart: Cart[] = [...get().cart];
+      const isCartExist = cart.findIndex(_ => _.id === product.id);
+      const idUser = useAuthStore.getState().accessToken;
 
-        if (isCartExist > -1) {
-          cart[isCartExist].quantity = cart[isCartExist].quantity + 1;
-        } else {
-          cart.push({...product, quantity: quantity});
-        }
+      if (isCartExist > -1) {
+        cart[isCartExist].quantity = cart[isCartExist].quantity + 1;
+      } else {
+        cart.push({...product, quantity});
+      }
 
-        return {...state, cart};
+      await addCart({
+        idUser: Number(idUser),
+        idProduct: product.id,
+        quantity,
       });
+
+      set(state => ({...state, cart}));
     },
-    removeCart: index => {
+    removeCart: (product, index) => {
       set(state => {
         const cart: Cart[] = [...state.cart];
         cart.splice(index, 1);
 
+        deleteCart(product.id);
         return {...state, cart};
       });
     },
-    editQuantityCart: (index, type) => {
-      set(state => {
-        const cart: Cart[] = [...state.cart];
+    editQuantityCart: (product, index, type) => {
+      const cart: Cart[] = [...get().cart];
 
-        if (type === 'min' && cart[index].quantity) {
-          cart[index].quantity = cart[index].quantity - 1;
-        }
+      if (type === 'min' && cart[index].quantity) {
+        cart[index].quantity = cart[index].quantity - 1;
+      }
 
-        if (type === 'plus') {
-          cart[index].quantity = cart[index].quantity + 1;
-        }
+      if (type === 'plus') {
+        cart[index].quantity = cart[index].quantity + 1;
+      }
 
-        return {...state, cart};
-      });
+      updateCart(product.id, cart[index].quantity);
+
+      set(state => ({...state, cart}));
     },
     clearCart: () => {
+      const idUser = useAuthStore.getState().accessToken;
+
+      if (idUser) {
+        deleteUserCart(Number(idUser));
+      }
       set(state => ({...state, cart: []}));
     },
     getTotalCart: () =>
@@ -63,6 +88,17 @@ const useCartStore = create<Props>((set, get) => {
           0,
         ) * 100,
       ) / 100,
+    getCartDb: async () => {
+      const idUser = useAuthStore.getState().accessToken;
+
+      if (idUser) {
+        const res = await getUserCart(Number(idUser));
+
+        if (res.status) {
+          set(state => ({...state, cart: res.cart}));
+        }
+      }
+    },
   };
 });
 

@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {LoginForm} from '../components/features/LoginForm';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {loginUser} from '../database/user';
 
 type Props = {
   accessToken?: string;
@@ -34,11 +35,15 @@ const useAuthStore = create<Props>(set => {
       try {
         set(state => ({...state, loading: true}));
 
-        if (email === 'test@gmail.com' && password === 'password') {
-          await EncryptedStorage.setItem('accessToken', 'xxx');
+        const loginRes = await loginUser(email, password);
+
+        if (loginRes.status) {
+          const id = String(loginRes.user?.id);
+
+          await EncryptedStorage.setItem('accessToken', id);
           set(state => ({
             ...state,
-            accessToken: 'xxxx',
+            accessToken: id,
             error: undefined,
           }));
         } else {

@@ -9,7 +9,7 @@ import useAuthStore from '../../stores/auth';
 import ErrorView from '../ErrorView';
 
 export const loginForm = z.object({
-  email: z.string().email().min(1, 'Email cannot empty'),
+  email: z.string().min(1, 'Email cannot empty').email(),
   password: z.string().min(1, 'Password cannot empty'),
 });
 
