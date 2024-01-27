@@ -9,7 +9,6 @@ import {
   updateCart,
 } from '../database/cart';
 import useAuthStore from './auth';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 type Props = {
   cart: Cart[];
